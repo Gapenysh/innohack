@@ -9,3 +9,9 @@ class EmployeeBL(object):
         data = EmployeeDAL.get_employees()
 
         return data
+
+    @staticmethod
+    def get_employee(user_id):
+        data = EmployeeDAL.get_employee(user_id)
+
+        return data
