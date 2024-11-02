@@ -1,0 +1,260 @@
+Index: hack_tool/llama_api/process.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nimport json\r\n\r\nimport requests\r\n\r\n\r\ndef proccess_lama(prompt, reviews):\r\n    url = \"https://vk-scoreworker-case.olymp.innopolis.university/generate\"\r\n    data = {\r\n        \"prompt\": [prompt],\r\n        \"apply_chat_template\": True,\r\n        \"system_prompt\": \"Вы полезный помощник.\",\r\n        \"max_tokens\": 500,\r\n        \"n\": 1,\r\n        \"temperature\": 0.7\r\n    }\r\n\r\n    headers = {\r\n        \"Content-Type\": \"application/json\"\r\n    }\r\n\r\n    response = requests.post(url, data=json.dumps(data), headers=headers)\r\n\r\n    if response.status_code == 200:\r\n        return response.json()\r\n    else:\r\n        return f\"Error: {response.status_code} - {response.text}\"\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/llama_api/process.py b/hack_tool/llama_api/process.py
+--- a/hack_tool/llama_api/process.py	(revision 6abcc72d29b431172f85b67e9744865ea8c82856)
++++ b/hack_tool/llama_api/process.py	(date 1730557789331)
+@@ -3,8 +3,50 @@
+ 
+ import requests
+ 
++def prepare_prompt(reviews):
++    prompt = (
++        "Ты профессиональный HR-специалист.\n"
++        "Вот несколько отзывов о сотруднике:\n\n"
++    )
++
++    # Добавляем отзывы в формате "Отзыв 1:", "Отзыв 2:" и так далее
++    for i, review in enumerate(reviews, start=1):
++        prompt += f"Отзыв {i}:\n{review['review']}\n\n"
+ 
++    # Инструкции по созданию структурированной сводки в формате JSON
++    prompt += (
++        "На основе этих отзывов нужно создать подробную сводку в формате JSON, "
++        "чтобы она включала ключевые параметры, сильные и слабые стороны, и рекомендации.\n\n"
++        "Используй следующий формат JSON:\n\n"
++        "{\n"
++        '  "summary": "Краткое описание сотрудника",\n'
++        '  "parameters": {\n'
++        '      "Коммуникабельность": <rating>,\n'
++        '      "Организованность": <rating>,\n'
++        '      "Профессионализм": <rating>\n'
++        '      // и другие параметры с оценками от 1 до 5\n'
++        "  },\n"
++        '  "strengths": [\n'
++        '      "Сильная сторона 1",\n'
++        '      "Сильная сторона 2"\n'
++        "  ],\n"
++        '  "weaknesses": [\n'
++        '      "Слабая сторона 1",\n'
++        '      "Слабая сторона 2"\n'
++        "  ],\n"
++        '  "recommendations": [\n'
++        '      "Рекомендация 1",\n'
++        '      "Рекомендация 2"\n'
++        "  ]\n"
++        "}\n\n"
++        "Пожалуйста, строго соблюдай этот формат JSON и следуй структуре, чтобы все данные были корректно записаны."
++    )
++
++    return prompt
++prompt = prepare_prompt()
+ def proccess_lama(prompt, reviews):
++
++
+     url = "https://vk-scoreworker-case.olymp.innopolis.university/generate"
+     data = {
+         "prompt": [prompt],
+Index: hack_tool/llama_api/prompt.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>class Prompts:\r\n    summary_prompt = []
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/llama_api/prompt.py b/hack_tool/llama_api/prompt.py
+--- a/hack_tool/llama_api/prompt.py	(revision 6abcc72d29b431172f85b67e9744865ea8c82856)
++++ b/hack_tool/llama_api/prompt.py	(date 1730557789324)
+@@ -1,2 +1,40 @@
+-class Prompts:
+-    summary_prompt = []
+\ No newline at end of file
++def prepare_prompt(reviews):
++    prompt = (
++        "Ты профессиональный HR-специалист.\n"
++        "Вот несколько отзывов о сотруднике:\n\n"
++    )
++
++    # Добавляем отзывы в формате "Отзыв 1:", "Отзыв 2:" и так далее
++    for i, review in enumerate(reviews, start=1):
++        prompt += f"Отзыв {i}:\n{review['review']}\n\n"
++
++    # Инструкции по созданию структурированной сводки в формате JSON
++    prompt += (
++        "На основе этих отзывов нужно создать подробную сводку в формате JSON, "
++        "чтобы она включала ключевые параметры, сильные и слабые стороны, и рекомендации.\n\n"
++        "Используй следующий формат JSON:\n\n"
++        "{\n"
++        '  "summary": "Краткое описание сотрудника",\n'
++        '  "parameters": {\n'
++        '      "Коммуникабельность": <rating>,\n'
++        '      "Организованность": <rating>,\n'
++        '      "Профессионализм": <rating>\n'
++        '      // и другие параметры с оценками от 1 до 5\n'
++        "  },\n"
++        '  "strengths": [\n'
++        '      "Сильная сторона 1",\n'
++        '      "Сильная сторона 2"\n'
++        "  ],\n"
++        '  "weaknesses": [\n'
++        '      "Слабая сторона 1",\n'
++        '      "Слабая сторона 2"\n'
++        "  ],\n"
++        '  "recommendations": [\n'
++        '      "Рекомендация 1",\n'
++        '      "Рекомендация 2"\n'
++        "  ]\n"
++        "}\n\n"
++        "Пожалуйста, строго соблюдай этот формат JSON и следуй структуре, чтобы все данные были корректно записаны."
++    )
++
++    return prompt
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 8\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2oHqkGas9IL77JhycJbMKxaMjfD\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-8336bb23522e-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.19072.16\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"\" />\r\n      <created>1730536989879</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730536989879</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 6abcc72d29b431172f85b67e9744865ea8c82856)
++++ b/.idea/workspace.xml	(date 1730558775963)
+@@ -1,12 +1,40 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="" />
++    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="Можно запустить">
++      <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/process.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/prompt.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/prompt.py" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="Python Script" />
++      </list>
++    </option>
++  </component>
++  <component name="Git.Settings">
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++  </component>
++  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
++  "lastFilter": {
++    "state": "OPEN",
++    "assignee": "Gapenysh"
++  }
++}]]></component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/Gapenysh/innohack.git",
++    "accountId": "47577a8a-4676-45fe-ac78-aebaa9d50de4"
++  }
++}]]></component>
+   <component name="ProjectColorInfo"><![CDATA[{
+   "associatedIndex": 8
+ }]]></component>
+@@ -15,6 +43,20 @@
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
++  </component>
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Python.config.executor": "Run",
++    "Python.run.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "git-widget-placeholder": "master",
++    "last_opened_file_path": "C:/Users/bulat/PycharmProject/innhackaton"
++  }
++}]]></component>
++  <component name="RecentsManager">
++    <key name="CopyFile.RECENT_KEYS">
++      <recent name="C:\Users\bulat\PycharmProject\innhackaton" />
++    </key>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+@@ -32,6 +74,28 @@
+       <option name="presentableId" value="Default" />
+       <updated>1730536989879</updated>
+     </task>
++    <task id="LOCAL-00001" summary="Сделал простую структуру для flask приложения">
++      <option name="closed" value="true" />
++      <created>1730544734553</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1730544734553</updated>
++    </task>
++    <task id="LOCAL-00002" summary="Можно запустить">
++      <option name="closed" value="true" />
++      <created>1730555892304</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1730555892304</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="Сделал простую структуру для flask приложения" />
++    <MESSAGE value="Можно запустить" />
++    <option name="LAST_COMMIT_MESSAGE" value="Можно запустить" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/dbnavigator.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DBNavigator.Project.Settings\">\r\n    <connections />\r\n    <browser-settings>\r\n      <general>\r\n        <display-mode value=\"TABBED\" />\r\n        <navigation-history-size value=\"100\" />\r\n        <show-object-details value=\"false\" />\r\n        <enable-sticky-paths value=\"true\" />\r\n      </general>\r\n      <filters>\r\n        <object-type-filter>\r\n          <object-type name=\"SCHEMA\" enabled=\"true\" />\r\n          <object-type name=\"USER\" enabled=\"true\" />\r\n          <object-type name=\"ROLE\" enabled=\"true\" />\r\n          <object-type name=\"PRIVILEGE\" enabled=\"true\" />\r\n          <object-type name=\"CHARSET\" enabled=\"true\" />\r\n          <object-type name=\"TABLE\" enabled=\"true\" />\r\n          <object-type name=\"VIEW\" enabled=\"true\" />\r\n          <object-type name=\"MATERIALIZED_VIEW\" enabled=\"true\" />\r\n          <object-type name=\"NESTED_TABLE\" enabled=\"true\" />\r\n          <object-type name=\"COLUMN\" enabled=\"true\" />\r\n          <object-type name=\"INDEX\" enabled=\"true\" />\r\n          <object-type name=\"CONSTRAINT\" enabled=\"true\" />\r\n          <object-type name=\"DATASET_TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"DATABASE_TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"SYNONYM\" enabled=\"true\" />\r\n          <object-type name=\"SEQUENCE\" enabled=\"true\" />\r\n          <object-type name=\"PROCEDURE\" enabled=\"true\" />\r\n          <object-type name=\"FUNCTION\" enabled=\"true\" />\r\n          <object-type name=\"PACKAGE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE_ATTRIBUTE\" enabled=\"true\" />\r\n          <object-type name=\"ARGUMENT\" enabled=\"true\" />\r\n          <object-type name=\"DIMENSION\" enabled=\"true\" />\r\n          <object-type name=\"CLUSTER\" enabled=\"true\" />\r\n          <object-type name=\"DBLINK\" enabled=\"true\" />\r\n        </object-type-filter>\r\n      </filters>\r\n      <sorting>\r\n        <object-type name=\"COLUMN\" sorting-type=\"NAME\" />\r\n        <object-type name=\"FUNCTION\" sorting-type=\"NAME\" />\r\n        <object-type name=\"PROCEDURE\" sorting-type=\"NAME\" />\r\n        <object-type name=\"ARGUMENT\" sorting-type=\"POSITION\" />\r\n        <object-type name=\"TYPE ATTRIBUTE\" sorting-type=\"POSITION\" />\r\n      </sorting>\r\n      <default-editors>\r\n        <object-type name=\"VIEW\" editor-type=\"SELECTION\" />\r\n        <object-type name=\"PACKAGE\" editor-type=\"SELECTION\" />\r\n        <object-type name=\"TYPE\" editor-type=\"SELECTION\" />\r\n      </default-editors>\r\n    </browser-settings>\r\n    <navigation-settings>\r\n      <lookup-filters>\r\n        <lookup-objects>\r\n          <object-type name=\"SCHEMA\" enabled=\"true\" />\r\n          <object-type name=\"USER\" enabled=\"false\" />\r\n          <object-type name=\"ROLE\" enabled=\"false\" />\r\n          <object-type name=\"PRIVILEGE\" enabled=\"false\" />\r\n          <object-type name=\"CHARSET\" enabled=\"false\" />\r\n          <object-type name=\"TABLE\" enabled=\"true\" />\r\n          <object-type name=\"VIEW\" enabled=\"true\" />\r\n          <object-type name=\"MATERIALIZED VIEW\" enabled=\"true\" />\r\n          <object-type name=\"INDEX\" enabled=\"true\" />\r\n          <object-type name=\"CONSTRAINT\" enabled=\"true\" />\r\n          <object-type name=\"DATASET TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"DATABASE TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"SYNONYM\" enabled=\"false\" />\r\n          <object-type name=\"SEQUENCE\" enabled=\"true\" />\r\n          <object-type name=\"PROCEDURE\" enabled=\"true\" />\r\n          <object-type name=\"FUNCTION\" enabled=\"true\" />\r\n          <object-type name=\"PACKAGE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE\" enabled=\"true\" />\r\n          <object-type name=\"DIMENSION\" enabled=\"false\" />\r\n          <object-type name=\"CLUSTER\" enabled=\"false\" />\r\n          <object-type name=\"DBLINK\" enabled=\"true\" />\r\n        </lookup-objects>\r\n        <force-database-load value=\"false\" />\r\n        <prompt-connection-selection value=\"true\" />\r\n        <prompt-schema-selection value=\"true\" />\r\n      </lookup-filters>\r\n    </navigation-settings>\r\n    <dataset-grid-settings>\r\n      <general>\r\n        <enable-zooming value=\"true\" />\r\n        <enable-column-tooltip value=\"true\" />\r\n      </general>\r\n      <sorting>\r\n        <nulls-first value=\"true\" />\r\n        <max-sorting-columns value=\"4\" />\r\n      </sorting>\r\n      <audit-columns>\r\n        <column-names value=\"\" />\r\n        <visible value=\"true\" />\r\n        <editable value=\"false\" />\r\n      </audit-columns>\r\n    </dataset-grid-settings>\r\n    <dataset-editor-settings>\r\n      <text-editor-popup>\r\n        <active value=\"false\" />\r\n        <active-if-empty value=\"false\" />\r\n        <data-length-threshold value=\"100\" />\r\n        <popup-delay value=\"1000\" />\r\n      </text-editor-popup>\r\n      <values-actions-popup>\r\n        <show-popup-button value=\"true\" />\r\n        <element-count-threshold value=\"1000\" />\r\n        <data-length-threshold value=\"250\" />\r\n      </values-actions-popup>\r\n      <general>\r\n        <fetch-block-size value=\"100\" />\r\n        <fetch-timeout value=\"30\" />\r\n        <trim-whitespaces value=\"true\" />\r\n        <convert-empty-strings-to-null value=\"true\" />\r\n        <select-content-on-cell-edit value=\"true\" />\r\n        <large-value-preview-active value=\"true\" />\r\n      </general>\r\n      <filters>\r\n        <prompt-filter-dialog value=\"true\" />\r\n        <default-filter-type value=\"BASIC\" />\r\n      </filters>\r\n      <qualified-text-editor text-length-threshold=\"300\">\r\n        <content-types>\r\n          <content-type name=\"Text\" enabled=\"true\" />\r\n          <content-type name=\"Properties\" enabled=\"true\" />\r\n          <content-type name=\"XML\" enabled=\"true\" />\r\n          <content-type name=\"DTD\" enabled=\"true\" />\r\n          <content-type name=\"HTML\" enabled=\"true\" />\r\n          <content-type name=\"XHTML\" enabled=\"true\" />\r\n          <content-type name=\"SQL\" enabled=\"true\" />\r\n          <content-type name=\"PL/SQL\" enabled=\"true\" />\r\n          <content-type name=\"JSON\" enabled=\"true\" />\r\n          <content-type name=\"JSON5\" enabled=\"true\" />\r\n          <content-type name=\"YAML\" enabled=\"true\" />\r\n        </content-types>\r\n      </qualified-text-editor>\r\n      <record-navigation>\r\n        <navigation-target value=\"VIEWER\" />\r\n      </record-navigation>\r\n    </dataset-editor-settings>\r\n    <code-editor-settings>\r\n      <general>\r\n        <show-object-navigation-gutter value=\"false\" />\r\n        <show-spec-declaration-navigation-gutter value=\"true\" />\r\n        <enable-spellchecking value=\"true\" />\r\n        <enable-reference-spellchecking value=\"false\" />\r\n      </general>\r\n      <confirmations>\r\n        <save-changes value=\"false\" />\r\n        <revert-changes value=\"true\" />\r\n        <exit-on-changes value=\"ASK\" />\r\n      </confirmations>\r\n    </code-editor-settings>\r\n    <code-completion-settings>\r\n      <filters>\r\n        <basic-filter>\r\n          <filter-element type=\"RESERVED_WORD\" id=\"keyword\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"function\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"parameter\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"datatype\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"exception\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"schema\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"role\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"user\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"privilege\" selected=\"true\" />\r\n          <user-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </user-schema>\r\n          <public-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"false\" />\r\n          </public-schema>\r\n          <any-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </any-schema>\r\n        </basic-filter>\r\n        <extended-filter>\r\n          <filter-element type=\"RESERVED_WORD\" id=\"keyword\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"function\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"parameter\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"datatype\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"exception\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"schema\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"user\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"role\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"privilege\" selected=\"true\" />\r\n          <user-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </user-schema>\r\n          <public-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </public-schema>\r\n          <any-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </any-schema>\r\n        </extended-filter>\r\n      </filters>\r\n      <sorting enabled=\"true\">\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"keyword\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"datatype\" />\r\n        <sorting-element type=\"OBJECT\" id=\"column\" />\r\n        <sorting-element type=\"OBJECT\" id=\"table\" />\r\n        <sorting-element type=\"OBJECT\" id=\"view\" />\r\n        <sorting-element type=\"OBJECT\" id=\"materialized view\" />\r\n        <sorting-element type=\"OBJECT\" id=\"index\" />\r\n        <sorting-element type=\"OBJECT\" id=\"constraint\" />\r\n        <sorting-element type=\"OBJECT\" id=\"trigger\" />\r\n        <sorting-element type=\"OBJECT\" id=\"synonym\" />\r\n        <sorting-element type=\"OBJECT\" id=\"sequence\" />\r\n        <sorting-element type=\"OBJECT\" id=\"procedure\" />\r\n        <sorting-element type=\"OBJECT\" id=\"function\" />\r\n        <sorting-element type=\"OBJECT\" id=\"package\" />\r\n        <sorting-element type=\"OBJECT\" id=\"type\" />\r\n        <sorting-element type=\"OBJECT\" id=\"dimension\" />\r\n        <sorting-element type=\"OBJECT\" id=\"cluster\" />\r\n        <sorting-element type=\"OBJECT\" id=\"dblink\" />\r\n        <sorting-element type=\"OBJECT\" id=\"schema\" />\r\n        <sorting-element type=\"OBJECT\" id=\"role\" />\r\n        <sorting-element type=\"OBJECT\" id=\"user\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"function\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"parameter\" />\r\n      </sorting>\r\n      <format>\r\n        <enforce-code-style-case value=\"true\" />\r\n      </format>\r\n    </code-completion-settings>\r\n    <execution-engine-settings>\r\n      <statement-execution>\r\n        <fetch-block-size value=\"100\" />\r\n        <execution-timeout value=\"20\" />\r\n        <debug-execution-timeout value=\"600\" />\r\n        <focus-result value=\"false\" />\r\n        <prompt-execution value=\"false\" />\r\n      </statement-execution>\r\n      <script-execution>\r\n        <command-line-interfaces />\r\n        <execution-timeout value=\"300\" />\r\n      </script-execution>\r\n      <method-execution>\r\n        <execution-timeout value=\"30\" />\r\n        <debug-execution-timeout value=\"600\" />\r\n        <parameter-history-size value=\"10\" />\r\n      </method-execution>\r\n    </execution-engine-settings>\r\n    <operation-settings>\r\n      <transactions>\r\n        <uncommitted-changes>\r\n          <on-project-close value=\"ASK\" />\r\n          <on-disconnect value=\"ASK\" />\r\n          <on-autocommit-toggle value=\"ASK\" />\r\n        </uncommitted-changes>\r\n        <multiple-uncommitted-changes>\r\n          <on-commit value=\"ASK\" />\r\n          <on-rollback value=\"ASK\" />\r\n        </multiple-uncommitted-changes>\r\n      </transactions>\r\n      <session-browser>\r\n        <disconnect-session value=\"ASK\" />\r\n        <kill-session value=\"ASK\" />\r\n        <reload-on-filter-change value=\"false\" />\r\n      </session-browser>\r\n      <compiler>\r\n        <compile-type value=\"KEEP\" />\r\n        <compile-dependencies value=\"ASK\" />\r\n        <always-show-controls value=\"false\" />\r\n      </compiler>\r\n    </operation-settings>\r\n    <ddl-file-settings>\r\n      <extensions>\r\n        <mapping file-type-id=\"VIEW\" extensions=\"vw\" />\r\n        <mapping file-type-id=\"TRIGGER\" extensions=\"trg\" />\r\n        <mapping file-type-id=\"PROCEDURE\" extensions=\"prc\" />\r\n        <mapping file-type-id=\"FUNCTION\" extensions=\"fnc\" />\r\n        <mapping file-type-id=\"PACKAGE\" extensions=\"pkg\" />\r\n        <mapping file-type-id=\"PACKAGE_SPEC\" extensions=\"pks\" />\r\n        <mapping file-type-id=\"PACKAGE_BODY\" extensions=\"pkb\" />\r\n        <mapping file-type-id=\"TYPE\" extensions=\"tpe\" />\r\n        <mapping file-type-id=\"TYPE_SPEC\" extensions=\"tps\" />\r\n        <mapping file-type-id=\"TYPE_BODY\" extensions=\"tpb\" />\r\n      </extensions>\r\n      <general>\r\n        <lookup-ddl-files value=\"true\" />\r\n        <create-ddl-files value=\"false\" />\r\n        <synchronize-ddl-files value=\"true\" />\r\n        <use-qualified-names value=\"false\" />\r\n        <make-scripts-rerunnable value=\"true\" />\r\n      </general>\r\n    </ddl-file-settings>\r\n    <general-settings>\r\n      <regional-settings>\r\n        <date-format value=\"MEDIUM\" />\r\n        <number-format value=\"UNGROUPED\" />\r\n        <locale value=\"SYSTEM_DEFAULT\" />\r\n        <use-custom-formats value=\"false\" />\r\n      </regional-settings>\r\n      <environment>\r\n        <environment-types>\r\n          <environment-type id=\"development\" name=\"Development\" description=\"Development environment\" color=\"-2430209/-12296320\" readonly-code=\"false\" readonly-data=\"false\" />\r\n          <environment-type id=\"integration\" name=\"Integration\" description=\"Integration environment\" color=\"-2621494/-12163514\" readonly-code=\"true\" readonly-data=\"false\" />\r\n          <environment-type id=\"production\" name=\"Production\" description=\"Productive environment\" color=\"-11574/-10271420\" readonly-code=\"true\" readonly-data=\"true\" />\r\n          <environment-type id=\"other\" name=\"Other\" description=\"\" color=\"-1576/-10724543\" readonly-code=\"false\" readonly-data=\"false\" />\r\n        </environment-types>\r\n        <visibility-settings>\r\n          <connection-tabs value=\"true\" />\r\n          <dialog-headers value=\"true\" />\r\n          <object-editor-tabs value=\"true\" />\r\n          <script-editor-tabs value=\"false\" />\r\n          <execution-result-tabs value=\"true\" />\r\n        </visibility-settings>\r\n      </environment>\r\n    </general-settings>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dbnavigator.xml b/.idea/dbnavigator.xml
+--- a/.idea/dbnavigator.xml	(revision 6abcc72d29b431172f85b67e9744865ea8c82856)
++++ b/.idea/dbnavigator.xml	(date 1730558775989)
+@@ -1,5 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="DBNavigator.Project.DatabaseFileManager">
++    <open-files />
++  </component>
+   <component name="DBNavigator.Project.Settings">
+     <connections />
+     <browser-settings>
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.12 (innhackaton)\" project-jdk-type=\"Python SDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 6abcc72d29b431172f85b67e9744865ea8c82856)
++++ b/.idea/misc.xml	(date 1730558775970)
+@@ -1,4 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="Black">
++    <option name="sdkName" value="Python 3.12 (innhackaton)" />
++  </component>
+   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (innhackaton)" project-jdk-type="Python SDK" />
++  <component name="PyCharmProfessionalAdvertiser">
++    <option name="shown" value="true" />
++  </component>
+ </project>
+\ No newline at end of file
