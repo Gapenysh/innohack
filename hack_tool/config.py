@@ -6,8 +6,7 @@ class Settings(BaseSettings):
     PASSWORD: str
     HOST_NAME: str
     DB_NAME: str
-    JWT_SECRET_KEY: str
-    JWT_TOKEN_LOCATION: str
+
 
     class Config:
         env_file = "../.env"
