@@ -1,6 +1,6 @@
 import psycopg2
 
-from config import settings
+from hack_tool.config import settings
 
 
 def connection_db():

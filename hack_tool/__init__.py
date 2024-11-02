@@ -2,7 +2,7 @@ __all__ = ("innohack_blueprint",)
 
 from flask import Blueprint
 
-from .client import client_blueprint
+from .employee import client_blueprint
 from .hr import hr_blueprint
 
 innohack_blueprint = Blueprint("innohack", __name__)
