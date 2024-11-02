@@ -7,7 +7,7 @@ class HrDal:
         conn = connection_db()
         try:
             with conn.cursor() as cur:
-                stmt = """SELECT * FROM review WHERE "ID_under_review" = %s"""
+                stmt = """SELECT * FROM reviews WHERE user_id = %s"""
                 cur.execute(stmt, (id,))
                 result = cur.fetchall()
             return result
