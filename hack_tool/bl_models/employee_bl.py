@@ -1,7 +1,9 @@
 from flask import jsonify
 import json
 
+from hack_tool.dal_models.hr_dal import HrDal
 from hack_tool.dal_models.employee_dal import EmployeeDAL
+
 
 
 class EmployeeBL(object):
@@ -16,6 +18,14 @@ class EmployeeBL(object):
         data = EmployeeDAL.get_employee(user_id)
 
         return data
+
+    @staticmethod
+    def add_summary_for_all_users():
+        users = EmployeeDAL.get_employees()
+        for user_id in users:
+            review = HrDal.get_reviews_by_id(user_id)
+            """надо доделать"""
+
 
     @staticmethod
     def add_summary_info(user_id, response_json):

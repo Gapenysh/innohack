@@ -1,6 +1,6 @@
 import psycopg2
 from flask import jsonify
-
+from hack_tool.dal_models.hr_dal import HrDal
 from hack_tool.db_connection import connection_db
 
 
@@ -45,6 +45,55 @@ class EmployeeDAL(object):
 
         finally:
             conn.close()
+    @staticmethod
+    def insert_employee_data(response, user_id):
+        # Добавление краткой сводки в таблицу summary
+        conn = connection_db()
+        cursor = conn.cursor()
+        summary_text = response['summary']
+        cursor.execute(
+            "INSERT INTO summary (user_id, context) VALUES (%s, %s)",
+            (user_id, summary_text)
+        )
+
+
+        for competency, rating in response['parameters'].items():
+            content = f"Оценка {competency} - {rating}"
+            cursor.execute(
+                "INSERT INTO competencies (user_id, name, rating, content) VALUES (%s, %s, %s, %s)",
+                (user_id, competency, rating, content)
+            )
+
+
+        for strength in response['strengths']:
+            cursor.execute(
+                "INSERT INTO strength_weak (user_id, strong_side) VALUES (%s, %s)",
+                (user_id, strength)
+            )
+
+
+        for weakness in response['weaknesses']:
+            cursor.execute(
+                "INSERT INTO strength_weak (user_id, weak_side) VALUES (%s, %s)",
+                (user_id, weakness)
+            )
+
+
+        for recommendation in response['recommendations']:
+            cursor.execute(
+                "INSERT INTO strength_weak (user_id, recomm) VALUES (%s, %s)",
+                (user_id, recommendation)
+            )
+
+        # Сохранение изменений
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+
+
+
+
 
     @staticmethod
     def add_summary_info(user_id, content):

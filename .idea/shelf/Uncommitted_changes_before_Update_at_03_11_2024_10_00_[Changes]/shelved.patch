@@ -1,0 +1,542 @@
+Index: hack_tool/__init__.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>__all__ = (\"innohack_blueprint\",)\r\n\r\nfrom flask import Blueprint\r\n\r\nfrom .employee import client_blueprint\r\nfrom .hr import hr_blueprint\r\n\r\ninnohack_blueprint = Blueprint(\"innohack\", __name__)\r\ninnohack_blueprint.register_blueprint(hr_blueprint)\r\ninnohack_blueprint.register_blueprint(client_blueprint)\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/__init__.py b/hack_tool/__init__.py
+--- a/hack_tool/__init__.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/__init__.py	(date 1730612027029)
+@@ -4,8 +4,10 @@
+ 
+ from .employee import client_blueprint
+ from .hr import hr_blueprint
++from .comparison import comparison_blueprint
+ 
+ innohack_blueprint = Blueprint("innohack", __name__)
+ innohack_blueprint.register_blueprint(hr_blueprint)
+ innohack_blueprint.register_blueprint(client_blueprint)
++innohack_blueprint.register_blueprint(comparison_blueprint)
+ 
+Index: hack_tool/bl_models/hr_bl.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from hack_tool.dal_models.hr_dal import HrDal\r\nfrom hack_tool.llama_api.process import prepare_prompt, proccess_lama\r\nclass HrBl:\r\n    @staticmethod\r\n    def create_summary(id):\r\n        reviews = HrDal.make_summary_test_by_id(id)\r\n        print(reviews)\r\n        prompt = prepare_prompt(reviews)\r\n        result = proccess_lama(prompt)\r\n        return result\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/bl_models/hr_bl.py b/hack_tool/bl_models/hr_bl.py
+--- a/hack_tool/bl_models/hr_bl.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/bl_models/hr_bl.py	(date 1730608187715)
+@@ -1,5 +1,6 @@
+ from hack_tool.dal_models.hr_dal import HrDal
+ from hack_tool.llama_api.process import prepare_prompt, proccess_lama
++
+ class HrBl:
+     @staticmethod
+     def create_summary(id):
+Index: hack_tool/dal_models/hr_dal.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from psycopg2 import Error\r\n\r\nfrom hack_tool.db_connection import connection_db\r\nclass HrDal:\r\n    @staticmethod\r\n    def make_summary_test_by_id(id):\r\n        conn = connection_db()\r\n        try:\r\n            with conn.cursor() as cur:\r\n                stmt = \"\"\"SELECT * FROM reviews WHERE user_id = %s\"\"\"\r\n                cur.execute(stmt, (id,))\r\n                result = cur.fetchall()\r\n            return result\r\n        except Error as e:\r\n            return str(e)\r\n        finally:\r\n            conn.close()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/dal_models/hr_dal.py b/hack_tool/dal_models/hr_dal.py
+--- a/hack_tool/dal_models/hr_dal.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/dal_models/hr_dal.py	(date 1730608571099)
+@@ -3,7 +3,7 @@
+ from hack_tool.db_connection import connection_db
+ class HrDal:
+     @staticmethod
+-    def make_summary_test_by_id(id):
++    def get_reviews_by_id(id):
+         conn = connection_db()
+         try:
+             with conn.cursor() as cur:
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"get employees\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/llama_api/process.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/llama_api/process.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/llama_api/prompt.py\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;AbdullinRR&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Gapenysh/innohack.git&quot;,\r\n    &quot;accountId&quot;: &quot;553dbff4-694e-4fbb-b85b-3c527105cef2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 8\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2oHqkGas9IL77JhycJbMKxaMjfD\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <OptionsSetting value=\"false\" id=\"Update\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.employee_bl.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.employee_dal.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.run.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"run\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"innhackaton\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"SDK_NAME\" value=\"Python 3.12\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/hack_tool\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/hack_tool/run.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"\" />\r\n      <created>1730536989879</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730536989879</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"get employees\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730557937990</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730557937990</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"get employees\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"get employees\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/.idea/workspace.xml	(date 1730612027358)
+@@ -4,55 +4,48 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="get employees">
++    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="">
++      <change afterPath="$PROJECT_DIR$/hack_tool/bl_models/comparison_bl.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/hack_tool/comparison/__init__.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/hack_tool/comparison/comparison_routes.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/hack_tool/dal_models/comparison_dal.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/hack_tool/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/process.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/prompt.py" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+-  <component name="Git.Settings">
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="Python Script" />
++      </list>
++    </option>
+   </component>
+-  <component name="GitHubPullRequestSearchHistory">{
+-  &quot;lastFilter&quot;: {
+-    &quot;state&quot;: &quot;OPEN&quot;,
+-    &quot;assignee&quot;: &quot;AbdullinRR&quot;
+-  }
+-}</component>
+-  <component name="GithubPullRequestsUISettings">{
+-  &quot;selectedUrlAndAccountId&quot;: {
+-    &quot;url&quot;: &quot;https://github.com/Gapenysh/innohack.git&quot;,
+-    &quot;accountId&quot;: &quot;553dbff4-694e-4fbb-b85b-3c527105cef2&quot;
+-  }
+-}</component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 8
+ }</component>
+   <component name="ProjectId" id="2oHqkGas9IL77JhycJbMKxaMjfD" />
+-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+-    <OptionsSetting value="false" id="Update" />
+-  </component>
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent">{
+   &quot;keyToString&quot;: {
+-    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.employee_bl.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.employee_dal.executor&quot;: &quot;Run&quot;,
+     &quot;Python.run.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;master&quot;
+   }
+ }</component>
+   <component name="RunManager">
+-    <configuration name="run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
++    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="innhackaton" />
+       <option name="ENV_FILES" value="" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+@@ -61,9 +54,8 @@
+         <env name="PYTHONUNBUFFERED" value="1" />
+       </envs>
+       <option name="SDK_HOME" value="" />
+-      <option name="SDK_NAME" value="Python 3.12" />
+       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/hack_tool" />
+-      <option name="IS_MODULE_SDK" value="false" />
++      <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/hack_tool/run.py" />
+@@ -75,11 +67,16 @@
+       <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Python.run" />
++      </list>
++    </recent_temporary>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
++        <option value="bundled-python-sdk-8336bb23522e-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.19072.16" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -92,30 +89,6 @@
+       <option name="presentableId" value="Default" />
+       <updated>1730536989879</updated>
+     </task>
+-    <task id="LOCAL-00001" summary="get employees">
+-      <option name="closed" value="true" />
+-      <created>1730557937990</created>
+-      <option name="number" value="00001" />
+-      <option name="presentableId" value="LOCAL-00001" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1730557937990</updated>
+-    </task>
+-    <option name="localTasksCounter" value="2" />
+     <servers />
+   </component>
+-  <component name="Vcs.Log.Tabs.Properties">
+-    <option name="TAB_STATES">
+-      <map>
+-        <entry key="MAIN">
+-          <value>
+-            <State />
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-  <component name="VcsManagerConfiguration">
+-    <MESSAGE value="get employees" />
+-    <option name="LAST_COMMIT_MESSAGE" value="get employees" />
+-  </component>
+ </project>
+\ No newline at end of file
+Index: hack_tool/comparison/__init__.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/comparison/__init__.py b/hack_tool/comparison/__init__.py
+new file mode 100644
+--- /dev/null	(date 1730612027023)
++++ b/hack_tool/comparison/__init__.py	(date 1730612027023)
+@@ -0,0 +1,8 @@
++__all__ = ("comparison_blueprint",)
++
++from flask import Blueprint
++
++from .comparison_routes import comparison_route
++
++comparison_blueprint = Blueprint("client_main", __name__)
++comparison_blueprint.register_blueprint(comparison_route)
+\ No newline at end of file
+Index: hack_tool/llama_api/process.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nimport json\r\n\r\nimport requests\r\n\r\ndef prepare_prompt(reviews):\r\n    prompt = (\r\n        \"Ты профессиональный HR-специалист.\\n\"\r\n        \"Вот несколько отзывов о сотруднике:\\n\\n\"\r\n    )\r\n\r\n    # Добавляем отзывы в формате \"Отзыв 1:\", \"Отзыв 2:\" и так далее\r\n    for i, review in enumerate(reviews, start=1):\r\n        prompt += f\"Отзыв {i}:\\n{review[2]}\\n\\n\"\r\n\r\n    # Инструкции по созданию структурированной сводки в формате JSON\r\n    prompt += (\r\n        \"На основе этих отзывов нужно создать подробную сводку в формате JSON, \"\r\n        \"чтобы она включала ключевые параметры, сильные и слабые стороны, и рекомендации.\\n\\n\"\r\n        \"Используй следующий формат JSON:\\n\\n\"\r\n        \"{\\n\"\r\n        '  \"summary\": \"Краткое описание сотрудника\",\\n'\r\n        '  \"parameters\": {\\n'\r\n        '      \"Коммуникабельность\": <rating>,\\n'\r\n        '      // и другие параметры с оценками от 1 до 5\\n'\r\n        \"  },\\n\"\r\n        '  \"strengths\": [\\n'\r\n        '      \"Сильная сторона 1\",\\n'\r\n        '      \"Сильная сторона 2\"\\n'\r\n        \"  ],\\n\"\r\n        '  \"weaknesses\": [\\n'\r\n        '      \"Слабая сторона 1\",\\n'\r\n        '      \"Слабая сторона 2\"\\n'\r\n        \"  ],\\n\"\r\n        '  \"recommendations\": [\\n'\r\n        '      \"Рекомендация 1\",\\n'\r\n        '      \"Рекомендация 2\"\\n'\r\n        \"  ]\\n\"\r\n        \"}\\n\\n\"\r\n        \"Пожалуйста, строго соблюдай этот формат JSON и следуй структуре, чтобы все данные были корректно записаны. Также, пожалуйста, делай сводку максимально объективно, если есть негативные моменты, то их тоже прописывай\"\r\n    )\r\n\r\n    return prompt\r\n\r\ndef proccess_lama(prompt):\r\n\r\n\r\n    url = \"https://vk-scoreworker-case.olymp.innopolis.university/generate\"\r\n    data = {\r\n        \"prompt\": [prompt],\r\n        \"apply_chat_template\": True,\r\n        \"system_prompt\": \"Вы полезный помощник.\",\r\n        \"max_tokens\": 1000,\r\n        \"n\": 1,\r\n        \"temperature\": 0.7\r\n    }\r\n\r\n    headers = {\r\n        \"Content-Type\": \"application/json\"\r\n    }\r\n\r\n    response = requests.post(url, data=json.dumps(data), headers=headers)\r\n\r\n    if response.status_code == 200:\r\n        print(response.json())\r\n        return response.json()\r\n    else:\r\n        return f\"Error: {response.status_code} - {response.text}\"\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/llama_api/process.py b/hack_tool/llama_api/process.py
+--- a/hack_tool/llama_api/process.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/llama_api/process.py	(date 1730606439003)
+@@ -1,7 +1,5 @@
+-
+-import json
+-
+ import requests
++import json
+ 
+ def prepare_prompt(reviews):
+     prompt = (
+@@ -9,50 +7,65 @@
+         "Вот несколько отзывов о сотруднике:\n\n"
+     )
+ 
+-    # Добавляем отзывы в формате "Отзыв 1:", "Отзыв 2:" и так далее
++
+     for i, review in enumerate(reviews, start=1):
++
+         prompt += f"Отзыв {i}:\n{review[2]}\n\n"
+ 
++    prompt += f"user_id: {reviews[1][1]}\n"
+     # Инструкции по созданию структурированной сводки в формате JSON
+     prompt += (
+         "На основе этих отзывов нужно создать подробную сводку в формате JSON, "
+         "чтобы она включала ключевые параметры, сильные и слабые стороны, и рекомендации.\n\n"
+-        "Используй следующий формат JSON:\n\n"
+-        "{\n"
++        "Если в отзывах есть упоминания имен в виде: [ИМЯ] и других параметров в [], то не используй их в создании сводки.\n\n"
++        "Используй следующий строгий формат JSON:\n\n"
++        '  "user_id": "",\n'
++        '  "role": "Предположительная роль сотрудника только 1 вариант",\n'
+         '  "summary": "Краткое описание сотрудника",\n'
+         '  "parameters": {\n'
+         '      "Коммуникабельность": <rating>,\n'
+-        '      // и другие параметры с оценками от 1 до 5\n'
++        '      "Ответственность": <rating>,\n'
++        '      "Работа в команде": <rating>,\n'
++        '      "Адаптивность": <rating>,\n'
++        '      // и другие параметры с оценками от 1 до 5 целыми числами\n'
+         "  },\n"
+-        '  "strengths": [\n'
++        '  "strengths": {\n'
+         '      "Сильная сторона 1",\n'
+         '      "Сильная сторона 2"\n'
+-        "  ],\n"
+-        '  "weaknesses": [\n'
++        "  },\n"
++        '  "weaknesses": {\n'
+         '      "Слабая сторона 1",\n'
+         '      "Слабая сторона 2"\n'
+-        "  ],\n"
+-        '  "recommendations": [\n'
++        "  },\n"
++        '  "recommendations": {\n'
+         '      "Рекомендация 1",\n'
+         '      "Рекомендация 2"\n'
+-        "  ]\n"
++        "  },\n"
++        
++        "  },\n"
+         "}\n\n"
+-        "Пожалуйста, строго соблюдай этот формат JSON и следуй структуре, чтобы все данные были корректно записаны. Также, пожалуйста, делай сводку максимально объективно, если есть негативные моменты, то их тоже прописывай"
++        "Пожалуйста, строго соблюдай этот формат JSON, следуй структуре и пиши в стандарт кодирования символов utf-8 для вывода только кириллицы на русском языке, чтобы все данные были корректно записаны. Также, пожалуйста, делай сводку максимально объективно, если есть негативные моменты, то их тоже прописывай"
++        "Удаляй контекст прошлых ответов, работай только с текущими данными"
++        "Рекомендации не оставляй пустыми"
+     )
+ 
+     return prompt
+ 
+ def proccess_lama(prompt):
+-
+-
+     url = "https://vk-scoreworker-case.olymp.innopolis.university/generate"
+     data = {
+         "prompt": [prompt],
+         "apply_chat_template": True,
+-        "system_prompt": "Вы полезный помощник.",
+-        "max_tokens": 1000,
+-        "n": 1,
+-        "temperature": 0.7
++        "system_prompt": "Ты профессиональный инструмент для HR специалиста, который пишет информацию только на русском и максимально следуя заданной структуре",
++        "max_tokens": 2000,
++        "n": 5,
++        "best_of": 5,
++        "temperature": 0.5,
++        "top_p": 0.9,
++        "top_k": 50,
++        "presence_penalty": 0.5,
++        "frequency_penalty": 0.5,
++        "repetition_penalty": 1.2
+     }
+ 
+     headers = {
+Index: hack_tool/dal_models/comparison_dal.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/dal_models/comparison_dal.py b/hack_tool/dal_models/comparison_dal.py
+new file mode 100644
+--- /dev/null	(date 1730617112944)
++++ b/hack_tool/dal_models/comparison_dal.py	(date 1730617112944)
+@@ -0,0 +1,43 @@
++from psycopg2 import Error
++
++from hack_tool.db_connection import connection_db
++class ComparisonDAL:
++    @staticmethod
++    def get_all_info_by_id(id):
++        conn = connection_db()
++        try:
++            with conn.cursor() as cur:
++
++                stmt_competencies = """
++                                    SELECT * FROM competencies WHERE user_id = %s
++                                """
++                cur.execute(stmt_competencies, (id,))
++                competencies_data = cur.fetchall()
++
++
++                stmt_summary = """
++                                    SELECT * FROM summary WHERE user_id = %s
++                                """
++                cur.execute(stmt_summary, (id,))
++                summary_data = cur.fetchall()
++
++
++                stmt_strength_weak = """
++                                    SELECT * FROM strength_weak WHERE user_id = %s
++                                """
++                cur.execute(stmt_strength_weak, (id,))
++                strength_weak_data = cur.fetchall()
++
++
++                return {
++                    "user_id": id,
++                    "competencies": competencies_data,
++                    "summary": summary_data,
++                    "strength_weak": strength_weak_data
++                }
++        finally:
++            conn.close()
++
++    @staticmethod
++    def compare_two_summary_ai(id, id_2):
++        pass
+\ No newline at end of file
+Index: hack_tool/comparison/comparison_routes.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/comparison/comparison_routes.py b/hack_tool/comparison/comparison_routes.py
+new file mode 100644
+--- /dev/null	(date 1730617240946)
++++ b/hack_tool/comparison/comparison_routes.py	(date 1730617240946)
+@@ -0,0 +1,24 @@
++from flask import Blueprint, request
++from hack_tool.bl_models.comparison_bl import ComparisonBL
++
++comparison_route = Blueprint("comparison_routes", __name__)
++
++@comparison_route.route("/comparison", methods=["GET"])
++def comparison_users():
++    user_id_1 = request.json.get("user_id_1", None)
++    user_id_2 = request.json.get("user_id_2", None)
++
++    result = ComparisonBL.get_info_two_users(user_id_1, user_id_2)
++
++    return result
++@comparison_route.route("/comparison/ai", methods=["GET"])
++def comparison_users():
++    user_id_1 = request.json.get("user_id_1", None)
++    user_id_2 = request.json.get("user_id_2", None)
++
++    result = ComparisonBL.comparison_users_by_id_ai(user_id_1, user_id_2)
++
++    return result
++
++
++
+Index: hack_tool/bl_models/employee_bl.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import jsonify\r\n\r\nfrom hack_tool.dal_models.employee_dal import EmployeeDAL\r\n\r\n\r\nclass EmployeeBL(object):\r\n    @staticmethod\r\n    def get_employees():\r\n        data = EmployeeDAL.get_employees()\r\n\r\n        return data\r\n\r\n    @staticmethod\r\n    def get_employee(user_id):\r\n        data = EmployeeDAL.get_employee(user_id)\r\n\r\n        return data
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/bl_models/employee_bl.py b/hack_tool/bl_models/employee_bl.py
+--- a/hack_tool/bl_models/employee_bl.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/bl_models/employee_bl.py	(date 1730608946973)
+@@ -1,8 +1,10 @@
+ from flask import jsonify
+ 
++from hack_tool.dal_models.hr_dal import HrDal
+ from hack_tool.dal_models.employee_dal import EmployeeDAL
+ 
+ 
++
+ class EmployeeBL(object):
+     @staticmethod
+     def get_employees():
+@@ -14,4 +16,12 @@
+     def get_employee(user_id):
+         data = EmployeeDAL.get_employee(user_id)
+ 
+-        return data
+\ No newline at end of file
++        return data
++
++    @staticmethod
++    def add_summary_for_all_users():
++        users = EmployeeDAL.get_employees()
++        for user_id in users:
++            review = HrDal.get_reviews_by_id(user_id)
++            """надо доделать"""
++
+Index: hack_tool/bl_models/comparison_bl.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/bl_models/comparison_bl.py b/hack_tool/bl_models/comparison_bl.py
+new file mode 100644
+--- /dev/null	(date 1730613781386)
++++ b/hack_tool/bl_models/comparison_bl.py	(date 1730613781386)
+@@ -0,0 +1,11 @@
++from hack_tool.dal_models.comparison_dal import ComparisonDAL
++class ComparisonBL:
++    @staticmethod
++    def get_info_two_users(id_1, id_2):
++        data1 = ComparisonDAL.get_all_info_by_id(id_1)
++        data2 = ComparisonDAL.get_all_info_by_id(id_2)
++        return data1, data2
++
++    @staticmethod
++    def get_info_two_users_ai(id_1, id_2):
++        pass
+\ No newline at end of file
+Index: hack_tool/dal_models/employee_dal.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import psycopg2\r\nfrom flask import jsonify\r\n\r\nfrom hack_tool.db_connection import connection_db\r\n\r\n\r\nclass EmployeeDAL(object):\r\n    @staticmethod\r\n    def get_employees():\r\n        conn = connection_db()\r\n\r\n        try:\r\n            with conn.cursor() as cursor:\r\n                query = f'''SELECT id FROM users;'''\r\n\r\n                cursor.execute(query)\r\n                employees = cursor.fetchall()\r\n\r\n            return employees\r\n\r\n        except Exception as e:\r\n            print(str(e))\r\n            return e\r\n\r\n        finally:\r\n            conn.close()\r\n\r\n    @staticmethod\r\n    def get_employee(user_id):\r\n        conn = connection_db()\r\n\r\n        try:\r\n            with conn.cursor() as cursor:\r\n                query = f'''SELECT * FROM users WHERE id = %s;'''\r\n\r\n                cursor.execute(query, (user_id,))\r\n                employee = cursor.fetchone()\r\n                print(employee)\r\n\r\n            return employee\r\n\r\n        except Exception as e:\r\n            print(str(e))\r\n            return e\r\n\r\n        finally:\r\n            conn.close()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/dal_models/employee_dal.py b/hack_tool/dal_models/employee_dal.py
+--- a/hack_tool/dal_models/employee_dal.py	(revision b51974ac6e343d3509c1e644f9cad2daa6ce75e2)
++++ b/hack_tool/dal_models/employee_dal.py	(date 1730608644137)
+@@ -1,6 +1,6 @@
+ import psycopg2
+ from flask import jsonify
+-
++from hack_tool.dal_models.hr_dal import HrDal
+ from hack_tool.db_connection import connection_db
+ 
+ 
+@@ -44,4 +44,53 @@
+             return e
+ 
+         finally:
+-            conn.close()
+\ No newline at end of file
++            conn.close()
++    @staticmethod
++    def insert_employee_data(response, user_id):
++        # Добавление краткой сводки в таблицу summary
++        conn = connection_db()
++        cursor = conn.cursor()
++        summary_text = response['summary']
++        cursor.execute(
++            "INSERT INTO summary (user_id, context) VALUES (%s, %s)",
++            (user_id, summary_text)
++        )
++
++
++        for competency, rating in response['parameters'].items():
++            content = f"Оценка {competency} - {rating}"
++            cursor.execute(
++                "INSERT INTO competencies (user_id, name, rating, content) VALUES (%s, %s, %s, %s)",
++                (user_id, competency, rating, content)
++            )
++
++
++        for strength in response['strengths']:
++            cursor.execute(
++                "INSERT INTO strength_weak (user_id, strong_side) VALUES (%s, %s)",
++                (user_id, strength)
++            )
++
++
++        for weakness in response['weaknesses']:
++            cursor.execute(
++                "INSERT INTO strength_weak (user_id, weak_side) VALUES (%s, %s)",
++                (user_id, weakness)
++            )
++
++
++        for recommendation in response['recommendations']:
++            cursor.execute(
++                "INSERT INTO strength_weak (user_id, recomm) VALUES (%s, %s)",
++                (user_id, recommendation)
++            )
++
++        # Сохранение изменений
++        conn.commit()
++        cursor.close()
++        conn.close()
++
++
++
++
++
