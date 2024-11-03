@@ -1,10 +1,11 @@
 import json
-
 import requests
 
 
 def prepare_prompt_comparison(data1, data2):
-    if data1[0] == data2[0]:  # проверка, чтобы убедиться, что это разные пользователи
+
+
+    if data1[0] == data2[0]:
         return None
 
     # Формируем инструкции для HR-специалиста
@@ -24,20 +25,18 @@ def prepare_prompt_comparison(data1, data2):
     return instructions
 
 
+
 def process_lama_comparison(prompt):
     url = "https://vk-scoreworker-case.olymp.innopolis.university/generate"
 
-    # Регулярное выражение для валидации JSON-ответа
-    regex_pattern = r'^\{\s*"summary":\s*".+?",\s*"parameters":\s*\{(?:\s*".+?":\s*[1-5],?\s*)+\},\s*"strengths":\s*\[.+?\],\s*"weaknesses":\s*\[.+?\],\s*"recommendations":\s*\[.+?\]\s*\}$'
 
     data = {
         "prompt": [prompt],
         "apply_chat_template": True,
         "system_prompt": "Ты профессиональный инструмент для HR специалиста",
-        "max_tokens": 10000,
-        "temperature": 0.5,
-        "n": 3,
-        "best_of": 3
+        "max_tokens": 100000,
+        "temperature": 0.7,
+        "n": 1,
     }
 
     headers = {

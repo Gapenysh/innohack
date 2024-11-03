@@ -3,11 +3,10 @@ from hack_tool.bl_models.comparison_bl import ComparisonBL
 
 comparison_route = Blueprint("comparison_routes", __name__)
 
-@comparison_route.route("/test_comparison", methods=["GET"])
-def test_get_all_info_user():
-    user_id_1 = request.json.get("user_id_1", None)
+@comparison_route.route("/employee/<int:id>", methods=["GET"])
+def test_get_all_info_user(id):
 
-    result = ComparisonBL.get_info_about_user(user_id_1)
+    result = ComparisonBL.get_info_about_user(id)
 
     return result
 

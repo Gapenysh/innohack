@@ -287,3 +287,30 @@ class EmployeeDAL(object):
             return e
         finally:
             conn.close()
+
+    @staticmethod
+    def get_user_role(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = '''SELECT job_title FROM users WHERE id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchone()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    # @staticmethod
+    # def get_all_employees():
+    #     conn = connection_db()
+    #     try:
+    #         with conn.cursor() as cursor:
+    #             query = """SELECT * FROM users WHERE job_title IS NOT NULL"""
+    #             cursor.execute(query)
+    #             list =

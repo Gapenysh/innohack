@@ -92,3 +92,9 @@ class EmployeeBL(object):
         user_data = EmployeeDAL.get_user_recommendations(user_id)
 
         return user_data
+
+    @staticmethod
+    def get_user_role(user_id):
+        user_data = EmployeeDAL.get_user_role(user_id)
+
+        return user_data
