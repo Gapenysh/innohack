@@ -1,3 +1,3 @@
 from flask import Blueprint
 
-client_route = Blueprint("client_routes", __name__)
+employee_route = Blueprint("employee_routes", __name__)
