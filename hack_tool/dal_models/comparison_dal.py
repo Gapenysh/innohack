@@ -73,12 +73,10 @@ class ComparisonDAL:
                 recommendation_data = cur.fetchall()
                 result += recommendation_data
 
+            print(result)
             return result
+
         except Error as e:
             return str(e)
         finally:
             conn.close()
-
-    @staticmethod
-    def compare_two_summary_ai(id, id_2):
-        pass

@@ -14,6 +14,7 @@ class ComparisonBL:
 
 
         prompt = prepare_prompt_comparison(data1, data2)
+
         if not prompt:
             return {"message": "data1 и data2 имеют одинаковые id",
                     "Data1_id": f"{data1[0]}",
