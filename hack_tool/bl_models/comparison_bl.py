@@ -4,7 +4,7 @@ class ComparisonBL:
     @staticmethod
     def get_info_about_user(id_1):
         data1 = ComparisonDAL.get_all_info_by_id(id_1)
-        print(data1[1])
+
         return data1
 
     @staticmethod
@@ -23,6 +23,3 @@ class ComparisonBL:
 
 
 
-    @staticmethod
-    def comparison_users_by_id_ai(user_id_1, user_id_2):
-        pass

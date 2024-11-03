@@ -18,7 +18,8 @@ def comparison_two_users_info():
 
     result_1 = ComparisonBL.get_info_about_user(user_id_1)
     result_2 = ComparisonBL.get_info_about_user(user_id_2)
-
+    print({"1 User": result_1,
+                   "2 User":  result_2})
     return jsonify({"1 User": result_1,
                    "2 User":  result_2})
 
