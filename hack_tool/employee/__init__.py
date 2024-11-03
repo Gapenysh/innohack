@@ -1,8 +1,8 @@
-__all__ = ("client_blueprint",)
+__all__ = ("employee_blueprint",)
 
 from flask import Blueprint
 
 from .employee_routes import client_route
 
-client_blueprint = Blueprint("client_main", __name__)
-client_blueprint.register_blueprint(client_route)
+employee_blueprint = Blueprint("employee_main", __name__)
+employee_blueprint.register_blueprint(client_route)
