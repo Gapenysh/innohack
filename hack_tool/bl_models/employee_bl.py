@@ -19,14 +19,6 @@ class EmployeeBL(object):
         return data
 
     @staticmethod
-    def add_summary_for_all_users():
-        users = EmployeeDAL.get_employees()
-        for user_id in users:
-            review = HrDal.get_reviews_by_id(user_id)
-            """надо доделать"""
-
-
-    @staticmethod
     def add_position_info(user_id, response_json):
         response = json.loads(response_json)
         position = response['role']
@@ -64,3 +56,39 @@ class EmployeeBL(object):
         response = json.loads(response_json)
         for recommendation in response['recommendations']:
             EmployeeDAL.add_recommendation_info(user_id, recommendation)
+
+    @staticmethod
+    def get_user_rating(user_id):
+        rating = EmployeeDAL.get_user_rating(user_id)
+
+        return rating
+
+    @staticmethod
+    def get_user_competencies(user_id):
+        user_data = EmployeeDAL.get_user_competencies(user_id)
+
+        return user_data
+
+    @staticmethod
+    def get_user_strong_side(user_id):
+        user_data = EmployeeDAL.get_user_strong_side(user_id)
+
+        return user_data
+
+    @staticmethod
+    def get_user_weak_side(user_id):
+        user_data = EmployeeDAL.get_user_weak_side(user_id)
+
+        return user_data
+
+    @staticmethod
+    def get_user_recommendations(user_id):
+        user_data = EmployeeDAL.get_user_recommendations(user_id)
+
+        return user_data
+
+    @staticmethod
+    def get_user_summary(user_id):
+        user_data = EmployeeDAL.get_user_recommendations(user_id)
+
+        return user_data
