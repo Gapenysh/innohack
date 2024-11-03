@@ -1,4 +1,5 @@
 import psycopg2
+from aiohttp.web_routedef import static
 from flask import jsonify
 from hack_tool.dal_models.hr_dal import HrDal
 from hack_tool.db_connection import connection_db
@@ -106,22 +107,16 @@ class EmployeeDAL(object):
             conn.close()
 
     @staticmethod
-    def add_competencies_info(user_id, competency, rating):
+    def add_competencies_info(user_id, competency, rating, description):
         conn = connection_db()
-
         try:
             with conn.cursor() as cursor:
-                query = f'''INSERT INTO competencies (user_id, name, rating) VALUES (%s, %s, %s)'''
-
-                cursor.execute(query, (user_id, competency, rating))
+                query = '''INSERT INTO competencies (user_id, name, rating, content) VALUES (%s, %s, %s, %s)'''
+                cursor.execute(query, (user_id, competency, rating, description))
                 conn.commit()
-
-
-
         except Exception as e:
             print(str(e))
             return e
-
         finally:
             conn.close()
 
@@ -163,6 +158,21 @@ class EmployeeDAL(object):
             with conn.cursor() as cursor:
                 query = '''INSERT INTO recommendation (user_id, content) VALUES (%s, %s)'''
                 cursor.execute(query, (user_id, recommendation))
+                conn.commit()
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def add_position_info(user_id, position):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = '''UPDATE users set job_title = %s WHERE id = %s'''
+                cursor.execute(query, (position, user_id))
                 conn.commit()
 
         except Exception as e:

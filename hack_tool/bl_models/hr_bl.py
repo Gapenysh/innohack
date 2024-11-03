@@ -12,6 +12,7 @@ class HrBl:
         result = proccess_lama(prompt)
 
         EmployeeBL.add_summary_info(user_id, result)
+        EmployeeBL.add_position_info(user_id, result)
         EmployeeBL.add_competencies_info(user_id, result)
         EmployeeBL.add_weak_info(user_id, result)
         EmployeeBL.add_strength_info(user_id, result)
