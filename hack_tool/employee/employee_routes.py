@@ -44,7 +44,7 @@ def create_review():
     user_id = request.json.get("user_id", None)
     review = request.json.get("review", None)
 
-    success = EmployeeBL.add_new_review(user_id, review)
+    success = EmployeeBL.create_review(user_id, review)
     if not success:
         return jsonify({"Error": "review wasnt created"})
     else:

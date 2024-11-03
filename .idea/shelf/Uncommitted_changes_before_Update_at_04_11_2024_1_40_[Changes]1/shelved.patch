@@ -1,0 +1,19 @@
+Index: hack_tool/employee/employee_routes.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import Blueprint, jsonify, request\r\n\r\nfrom hack_tool.bl_models.employee_bl import EmployeeBL\r\n\r\nemployee_route = Blueprint(\"employee_routes\", __name__)\r\n\r\n\r\n@employee_route.route('/profile/<int:user_id>', methods=['GET'])\r\ndef get_employee(user_id):\r\n    employee = EmployeeBL.get_employee(user_id)\r\n    role = EmployeeBL.get_user_role(user_id)\r\n    ratings = EmployeeBL.get_user_rating(user_id)\r\n    average_rating = round(sum(rating[0] for rating in ratings) / len(ratings), 2)\r\n    user_competencies = EmployeeBL.get_user_competencies(user_id)\r\n    user_strong_side = EmployeeBL.get_user_strong_side(user_id)\r\n    user_weak_side = EmployeeBL.get_user_weak_side(user_id)\r\n    user_recommendations = EmployeeBL.get_user_recommendations(user_id)\r\n    user_summary = EmployeeBL.get_user_summary(user_id)\r\n\r\n\r\n    if employee is None:\r\n\r\n        return jsonify({\"error\": \"Employee not found\"}), 404\r\n\r\n    return jsonify({\r\n        \"rating\": average_rating,\r\n        \"role\": role,\r\n        \"competencies\": user_competencies,\r\n        \"strong_side\": user_strong_side,\r\n        \"weak_side\": user_weak_side,\r\n        \"recommendations\": user_recommendations,\r\n        \"summary\": user_summary\r\n    })\r\n\r\n@employee_route.route(\"/list_employees\", methods=[\"GET\"])\r\ndef get_list_employees():\r\n    employees = EmployeeBL.get_list_employees_with_review_count()\r\n\r\n\r\n    return jsonify(employees)\r\n\r\n@employee_route.route(\"/add_review\", methods=[\"POST\"])\r\ndef create_review():\r\n    user_id = request.json.get(\"user_id\", None)\r\n    review = request.json.get(\"review\", None)\r\n\r\n    success = EmployeeBL.add_new_review(user_id, review)\r\n    if not success:\r\n        return jsonify({\"Error\": \"review wasnt created\"})\r\n    else:\r\n        return jsonify({\"message\": \"review was created\"})\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/employee/employee_routes.py b/hack_tool/employee/employee_routes.py
+--- a/hack_tool/employee/employee_routes.py	
++++ b/hack_tool/employee/employee_routes.py	
+@@ -44,7 +44,7 @@
+     user_id = request.json.get("user_id", None)
+     review = request.json.get("review", None)
+ 
+-    success = EmployeeBL.add_new_review(user_id, review)
++    success = EmployeeBL.create_review(user_id, review)
+     if not success:
+         return jsonify({"Error": "review wasnt created"})
+     else:
