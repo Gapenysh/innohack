@@ -307,5 +307,55 @@ class EmployeeDAL(object):
         finally:
             conn.close()
 
+    @staticmethod
+    def get_all_employees_with_reviews_count():
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                # Первый запрос для получения всех пользователей с непустым content
+                query = '''SELECT user_id FROM summary WHERE content IS NOT NULL'''
+                cursor.execute(query)
+                users = cursor.fetchall()
+
+                result = []
+                for user in users:
+                    user_id = user[0]
+
+                    # Подсчитываем среднюю оценку по критериям
+                    ratings = EmployeeDAL.get_user_rating(user_id)
+                    average_rating = round(sum(rating[0] for rating in ratings) / len(ratings), 2)
+
+                    # Второй запрос для получения имени и должности пользователя
+                    query = '''SELECT name, job_title FROM users WHERE id = %s'''
+                    cursor.execute(query, (user_id,))
+                    user_info = cursor.fetchone()
+
+                    # Третий запрос для получения всех отзывов пользователя
+                    query = '''SELECT content FROM summary WHERE user_id = %s'''
+                    cursor.execute(query, (user_id,))
+                    summary = cursor.fetchall()
+
+                    # Четвертый запрос для подсчета количества отзывов
+                    query = '''SELECT count(*) FROM reviews WHERE user_id = %s'''
+                    cursor.execute(query, (user_id,))
+                    reviews_count = cursor.fetchone()[0]
+
+                    # Собираем результат
+                    result.append({
+                        'user_id': user_id,
+                        'name': user_info[0],
+                        'job_title': user_info[1],
+                        'summary': summary,
+                        'reviews_count': reviews_count,
+                        'average_rating': average_rating
+                    })
+
+                return result
+
+        except Error as e:
+            return str(e)
+        finally:
+            conn.close()
+
 
 

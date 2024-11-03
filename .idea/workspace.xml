@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="Create chat module and redact get_employee function(add role)">
-      <change beforePath="$PROJECT_DIR$/.idea/innhackaton.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/innhackaton.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_15_31__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_15_31__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_21_36__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_21_36__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_23_23__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_03_11_2024_23_23__Changes_.xml" afterDir="false" />
+    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="Add functions for creating new review">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_04_11_2024_0_09__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_04_11_2024_0_09__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +123,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730665244618</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add functions for creating new review">
+      <option name="closed" value="true" />
+      <created>1730675529357</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1730675529357</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,6 +149,7 @@
     <MESSAGE value="get employees" />
     <MESSAGE value="add function for returning info about summary of employee" />
     <MESSAGE value="Create chat module and redact get_employee function(add role)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create chat module and redact get_employee function(add role)" />
+    <MESSAGE value="Add functions for creating new review" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add functions for creating new review" />
   </component>
 </project>
