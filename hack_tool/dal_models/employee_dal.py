@@ -1,6 +1,8 @@
 import psycopg2
 from aiohttp.web_routedef import static
 from flask import jsonify
+from numpy.ma.extras import average
+
 from hack_tool.dal_models.hr_dal import HrDal
 from hack_tool.db_connection import connection_db
 from psycopg2 import Error
@@ -312,59 +314,49 @@ class EmployeeDAL(object):
         conn = connection_db()
         try:
             with conn.cursor() as cursor:
-                query = """SELECT id, name, job_title FROM users WHERE job_title IS NOT NULL"""
+                # Первый запрос для получения всех пользователей с непустым content
+                query = '''SELECT user_id FROM summary WHERE content IS NOT NULL'''
                 cursor.execute(query)
-                employees = cursor.fetchall()
-                user_ids = [employee[0] for employee in employees]
+                users = cursor.fetchall()
 
-                if not user_ids:
-                    return []
+                result = []
+                for user in users:
+                    user_id = user[0]
 
+                    # Подсчитываем среднюю оценку по критериям
+                    ratings = EmployeeDAL.get_user_rating(user_id)
+                    average_rating = round(sum(rating[0] for rating in ratings) / len(ratings), 2)
 
-                query_count_review = """
-                                    SELECT user_id, COUNT(*) as review_count
-                                    FROM reviews
-                                    WHERE user_id IN %s
-                                    GROUP BY user_id
-                                """
-                cursor.execute(query_count_review, (tuple(user_ids),))
-                review_counts = cursor.fetchall()
+                    # Второй запрос для получения имени и должности пользователя
+                    query = '''SELECT name, job_title FROM users WHERE id = %s'''
+                    cursor.execute(query, (user_id,))
+                    user_info = cursor.fetchone()
 
-                query_competencies = """
-                                    SELECT  AVG(rating) as avg_value
-                                    FROM competencies
-                                    WHERE user_id IN %s
-                                    GROUP BY user_id
-                                """
-                cursor.execute(query_competencies, (tuple(user_ids),))
-                competencies = cursor.fetchall()
+                    # Третий запрос для получения всех отзывов пользователя
+                    query = '''SELECT content FROM summary WHERE user_id = %s'''
+                    cursor.execute(query, (user_id,))
+                    summary = cursor.fetchall()
 
+                    # Четвертый запрос для подсчета количества отзывов
+                    query = '''SELECT count(*) FROM reviews WHERE user_id = %s'''
+                    cursor.execute(query, (user_id,))
+                    reviews_count = cursor.fetchone()[0]
 
-                query_summary = """
-                                    SELECT content
-                                    FROM summary
-                                    WHERE user_id IN %s
-                                """
-                cursor.execute(query_summary, (tuple(user_ids),))
-                summaries = cursor.fetchall()
-
-                # Объединение данных
-                employee_reviews = []
-                for employee in employees:
-                    user_id = employee[0]
-                    review_count = next((rc[1] for rc in review_counts if rc[0] == user_id), 0)
-                    avg_competency = next((comp[1] for comp in competencies if comp[0] == user_id), None)
-                    summary_text = next((summ[1] for summ in summaries if summ[0] == user_id), None)
-                    employee_reviews.append({
-                        'employee': employee,
-                        'review_count': review_count,
-                        'avg_competency': avg_competency,
-                        'summary_text': summary_text
+                    # Собираем результат
+                    result.append({
+                        'user_id': user_id,
+                        'name': user_info[0],
+                        'job_title': user_info[1],
+                        'summary': summary,
+                        'reviews_count': reviews_count,
+                        'average_rating': average_rating
                     })
 
-                return employee_reviews
+                return result
+
         except Error as e:
             return str(e)
         finally:
             conn.close()
+
 

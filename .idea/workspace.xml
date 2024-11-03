@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="Create chat module and redact get_employee function(add role)">
+    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="add function for returning info about summary of employee">
+      <change afterPath="$PROJECT_DIR$/hack_tool/bl_models/chat_bl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hack_tool/chat/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hack_tool/chat/chat_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hack_tool/dal_models/chat_dal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/innhackaton.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/innhackaton.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/comparison/comparison_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/comparison/comparison_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/proccess_comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/proccess_comparison.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,23 +116,7 @@
       <option name="project" value="LOCAL" />
       <updated>1730637075474</updated>
     </task>
-    <task id="LOCAL-00003" summary="Create chat module and redact get_employee function(add role)">
-      <option name="closed" value="true" />
-      <created>1730665234602</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1730665234602</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Create chat module and redact get_employee function(add role)">
-      <option name="closed" value="true" />
-      <created>1730665244618</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1730665244618</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,7 +133,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="get employees" />
     <MESSAGE value="add function for returning info about summary of employee" />
-    <MESSAGE value="Create chat module and redact get_employee function(add role)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create chat module and redact get_employee function(add role)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add function for returning info about summary of employee" />
   </component>
 </project>

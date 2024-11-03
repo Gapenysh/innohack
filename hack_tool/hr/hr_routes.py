@@ -9,14 +9,20 @@ hr_route = Blueprint("hr_routes", __name__)
 
 @hr_route.route('/employees', methods=['GET'])
 def get_employees():
-    employees = EmployeeBL.get_employees()
+    employees = EmployeeBL.get_list_employees_with_review_count()
+
 
     return employees
 
 
 @hr_route.route('/employees/<int:user_id>', methods=['GET'])
 def get_employee(user_id):
+
     employee = EmployeeBL.get_employee(user_id)
+
+    employee.append({
+        "average_rating": average_rating
+    })
 
     if employee is None:
 
