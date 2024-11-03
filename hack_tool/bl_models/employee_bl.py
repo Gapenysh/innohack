@@ -5,7 +5,6 @@ from hack_tool.dal_models.hr_dal import HrDal
 from hack_tool.dal_models.employee_dal import EmployeeDAL
 
 
-
 class EmployeeBL(object):
     @staticmethod
     def get_employees():
@@ -28,6 +27,13 @@ class EmployeeBL(object):
 
 
     @staticmethod
+    def add_position_info(user_id, response_json):
+        response = json.loads(response_json)
+        position = response['role']
+        EmployeeDAL.add_position_info(user_id, position)
+
+
+    @staticmethod
     def add_summary_info(user_id, response_json):
         response = json.loads(response_json)
         content = response['summary']
@@ -36,8 +42,10 @@ class EmployeeBL(object):
     @staticmethod
     def add_competencies_info(user_id, response_json):
         response = json.loads(response_json)
-        for competency, rating in response['parameters'].items():
-            EmployeeDAL.add_competencies_info(user_id, competency, rating)
+        for competency, details in response['parameters'].items():
+            rating = details['rating']
+            description = details.get('description', None)
+            EmployeeDAL.add_competencies_info(user_id, competency, rating, description)
 
     @staticmethod
     def add_strength_info(user_id, response_json):
