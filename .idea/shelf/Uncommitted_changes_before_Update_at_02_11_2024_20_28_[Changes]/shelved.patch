@@ -1,0 +1,106 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"get employees\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/hr/hr_routes.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/hr/hr_routes.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\r\n  \"lastFilter\": {\r\n    \"state\": \"OPEN\",\r\n    \"assignee\": \"AbdullinRR\"\r\n  }\r\n}]]></component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/Gapenysh/innohack.git\",\r\n    \"accountId\": \"553dbff4-694e-4fbb-b85b-3c527105cef2\"\r\n  }\r\n}]]></component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 8\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2oHqkGas9IL77JhycJbMKxaMjfD\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Python.db_connection.executor\": \"Run\",\r\n    \"Python.employee_bl.executor\": \"Run\",\r\n    \"Python.employee_dal.executor\": \"Run\",\r\n    \"Python.run.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"master\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"run\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"innhackaton\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"SDK_NAME\" value=\"Python 3.12\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/hack_tool\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/hack_tool/run.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"\" />\r\n      <created>1730536989879</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730536989879</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"get employees\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730557937990</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730557937990</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"get employees\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"get employees\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 6a9e3a63e62e6a2c9abd6b8255ad5411e76b935e)
++++ b/.idea/workspace.xml	(date 1730568478670)
+@@ -4,11 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="get employees">
++    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment=" get employee from id">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -18,18 +15,18 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "AbdullinRR"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;AbdullinRR&quot;
+   }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/Gapenysh/innohack.git",
+-    "accountId": "553dbff4-694e-4fbb-b85b-3c527105cef2"
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/Gapenysh/innohack.git&quot;,
++    &quot;accountId&quot;: &quot;553dbff4-694e-4fbb-b85b-3c527105cef2&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 8
+ }</component>
+@@ -39,16 +36,17 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Python.db_connection.executor": "Run",
+-    "Python.employee_bl.executor": "Run",
+-    "Python.employee_dal.executor": "Run",
+-    "Python.run.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "git-widget-placeholder": "master"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,
++    &quot;Python.employee_bl.executor&quot;: &quot;Run&quot;,
++    &quot;Python.employee_dal.executor&quot;: &quot;Run&quot;,
++    &quot;Python.run.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/PycharmProjects/test&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RunManager">
+     <configuration name="run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+       <module name="innhackaton" />
+@@ -98,7 +96,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1730557937990</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary=" get employee from id">
++      <option name="closed" value="true" />
++      <created>1730558764371</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1730558764371</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -114,6 +120,7 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="get employees" />
+-    <option name="LAST_COMMIT_MESSAGE" value="get employees" />
++    <MESSAGE value=" get employee from id" />
++    <option name="LAST_COMMIT_MESSAGE" value=" get employee from id" />
+   </component>
+ </project>
+\ No newline at end of file

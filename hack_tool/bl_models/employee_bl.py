@@ -49,10 +49,10 @@ class EmployeeBL(object):
     def add_weak_info(user_id, response_json):
         response = json.loads(response_json)
         for weakness in response['weaknesses']:
-            EmployeeDAL.add_strength_info(user_id, weakness)
+            EmployeeDAL.add_weak_info(user_id, weakness)
 
     @staticmethod
     def add_recommendation_info(user_id, response_json):
         response = json.loads(response_json)
         for recommendation in response['recommendations']:
-            EmployeeDAL.add_strength_info(user_id, recommendation)
+            EmployeeDAL.add_recommendation_info(user_id, recommendation)

@@ -11,8 +11,9 @@ def comparison_users():
     result = ComparisonBL.get_info_two_users(user_id_1, user_id_2)
 
     return result
+
 @comparison_route.route("/comparison/ai", methods=["GET"])
-def comparison_users():
+def comparison_users_1():
     user_id_1 = request.json.get("user_id_1", None)
     user_id_2 = request.json.get("user_id_2", None)
 

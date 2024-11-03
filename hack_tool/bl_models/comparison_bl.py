@@ -11,3 +11,7 @@ class ComparisonBL:
     def get_info_two_users_ai(id_1, id_2):
         data1 = ComparisonDAL.get_all_info_by_id(id_1)
         data2 = ComparisonDAL.get_all_info_by_id(id_2)
+
+    @staticmethod
+    def comparison_users_by_id_ai(user_id_1, user_id_2):
+        pass

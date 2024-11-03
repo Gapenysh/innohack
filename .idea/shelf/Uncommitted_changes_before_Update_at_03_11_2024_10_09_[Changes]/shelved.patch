@@ -1,0 +1,95 @@
+Index: hack_tool/llama_api/process.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import json\r\nimport requests\r\n\r\ndef prepare_prompt(reviews):\r\n    # Декларация полей\r\n    field_definitions = (\r\n        \"Поля для сводки в формате JSON:\\n\"\r\n        \"1. summary: Краткое описание сотрудника на основе отзывов. Строка.\\n\"\r\n        \"2. parameters: Оценки ключевых параметров сотрудника. Объект со следующими полями:\\n\"\r\n        \"   - Коммуникабельность: Оценка от 1 до 5\\n\"\r\n        \"   - Ответственность: Оценка от 1 до 5\\n\"\r\n        \"   - Дополнительные параметры также принимаются с оценками от 1 до 5\\n\"\r\n        \"3. strengths: Сильные стороны сотрудника. Массив строк.\\n\"\r\n        \"4. weaknesses: Слабые стороны сотрудника. Массив строк.\\n\"\r\n        \"5. recommendations: Рекомендации по улучшению. Массив строк.\\n\"\r\n    )\r\n\r\n    # Инструкции и формат JSON\r\n    instructions = (\r\n        \"Ты профессиональный HR-специалист.\\n\"\r\n        \"Вот определенное количество отзывов о сотруднике:\\n\\n\"\r\n    )\r\n\r\n    # Добавляем отзывы в промпт\r\n    for i, review in enumerate(reviews, start=1):\r\n        instructions += f\"Отзыв {i}:\\n{review[2]}\\n\\n\"\r\n\r\n    instructions += f\"user_id: {reviews[1][1]}\\n\"\r\n\r\n    # Упоминание формата JSON и требование строго следовать структуре\r\n    instructions += (\r\n        \"На основе этих отзывов нужно создать подробную сводку в формате JSON, используя следующие поля:\\n\\n\"\r\n        '  \"user_id\": \"\",\\n'\r\n        '  \"role\": \"Предположительная роль сотрудника только 1 вариант\",\\n'\r\n        + field_definitions +\r\n        \"\\nСгенерируй JSON-объект, который строго следует указанной структуре. Пример:\\n\\n\"\r\n        \"{\\n\"\r\n        '  \"summary\": \"Краткое описание сотрудника\",\\n'\r\n        '  \"parameters\": {\\n'\r\n        '      \"Коммуникабельность\": 5,\\n'\r\n        '      \"Ответственность\": 4,\\n'\r\n        '      // Дополнительные параметры\\n'\r\n        \"  },\\n\"\r\n        '  \"strengths\": [\\n'\r\n        '      \"Сильная сторона 1\",\\n'\r\n        '      \"Сильная сторона 2\"\\n'\r\n        \"  ],\\n\"\r\n        '  \"weaknesses\": [\\n'\r\n        '      \"Слабая сторона 1\",\\n'\r\n        '      \"Слабая сторона 2\"\\n'\r\n        \"  ],\\n\"\r\n        '  \"recommendations\": [\\n'\r\n        '      \"Рекомендация 1\",\\n'\r\n        '      \"Рекомендация 2\"\\n'\r\n        \"  ]\\n\"\r\n        \"}\\n\\n\"\r\n        \"Пожалуйста, соблюдай формат JSON и используй кодировку UTF-8. Работай только с текущими данными, не учитывая контекст прошлых ответов.\"\r\n    )\r\n\r\n    return instructions\r\n\r\ndef process_lama(prompt):\r\n    url = \"https://vk-scoreworker-case.olymp.innopolis.university/generate\"\r\n\r\n    # Регулярное выражение для валидации JSON-ответа\r\n    regex_pattern = r'^\\{\\s*\"summary\":\\s*\".+?\",\\s*\"parameters\":\\s*\\{(?:\\s*\".+?\":\\s*[1-5],?\\s*)+\\},\\s*\"strengths\":\\s*\\[.+?\\],\\s*\"weaknesses\":\\s*\\[.+?\\],\\s*\"recommendations\":\\s*\\[.+?\\]\\s*\\}$'\r\n\r\n    data = {\r\n        \"prompt\": [prompt],\r\n        \"apply_chat_template\": True,\r\n        \"system_prompt\": \"Ты профессиональный инструмент для HR специалиста\",\r\n        \"max_tokens\": 100000,\r\n        \"temperature\": 0.7,\r\n        \"n\": 1,\r\n    }\r\n\r\n    headers = {\r\n        \"Content-Type\": \"application/json\"\r\n    }\r\n\r\n    response = requests.post(url, data=json.dumps(data), headers=headers)\r\n\r\n    if response.status_code == 200:\r\n        print(response.json())\r\n        return response.json()\r\n    else:\r\n        return f\"Error: {response.status_code} - {response.text}\"\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/llama_api/process.py b/hack_tool/llama_api/process.py
+--- a/hack_tool/llama_api/process.py	(revision ca61ac23bd7a2e55111ea5bc81aaa32d3a91180f)
++++ b/hack_tool/llama_api/process.py	(date 1730617299785)
+@@ -55,6 +55,7 @@
+         "  ]\n"
+         "}\n\n"
+         "Пожалуйста, соблюдай формат JSON и используй кодировку UTF-8. Работай только с текущими данными, не учитывая контекст прошлых ответов."
++        "Также, прошу заполнить все пункты, weakness и recommendations в том числе, даже если нечего добавить, то добавь что нибудь пожалуйста, это важно!"
+     )
+ 
+     return instructions
+Index: hack_tool/bl_models/employee_bl.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import jsonify\r\nimport json\r\n\r\nfrom hack_tool.dal_models.employee_dal import EmployeeDAL\r\n\r\n\r\nclass EmployeeBL(object):\r\n    @staticmethod\r\n    def get_employees():\r\n        data = EmployeeDAL.get_employees()\r\n\r\n        return data\r\n\r\n    @staticmethod\r\n    def get_employee(user_id):\r\n        data = EmployeeDAL.get_employee(user_id)\r\n\r\n        return data\r\n\r\n    @staticmethod\r\n    def add_summary_info(user_id, response_json):\r\n        response = json.loads(response_json)\r\n        content = response['summary']\r\n        EmployeeDAL.add_summary_info(user_id, content)\r\n\r\n    @staticmethod\r\n    def add_competencies_info(user_id, response_json):\r\n        response = json.loads(response_json)\r\n        for competency, rating in response['parameters'].items():\r\n            EmployeeDAL.add_competencies_info(user_id, competency, rating)\r\n\r\n    @staticmethod\r\n    def add_strength_info(user_id, response_json):\r\n        response = json.loads(response_json)\r\n        for strength in response['strengths']:\r\n            EmployeeDAL.add_strength_info(user_id, strength)\r\n\r\n    @staticmethod\r\n    def add_weak_info(user_id, response_json):\r\n        response = json.loads(response_json)\r\n        for weakness in response['weaknesses']:\r\n            EmployeeDAL.add_strength_info(user_id, weakness)\r\n\r\n    @staticmethod\r\n    def add_recommendation_info(user_id, response_json):\r\n        response = json.loads(response_json)\r\n        for recommendation in response['recommendations']:\r\n            EmployeeDAL.add_strength_info(user_id, recommendation)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hack_tool/bl_models/employee_bl.py b/hack_tool/bl_models/employee_bl.py
+--- a/hack_tool/bl_models/employee_bl.py	(revision ca61ac23bd7a2e55111ea5bc81aaa32d3a91180f)
++++ b/hack_tool/bl_models/employee_bl.py	(date 1730617558651)
+@@ -39,10 +39,10 @@
+     def add_weak_info(user_id, response_json):
+         response = json.loads(response_json)
+         for weakness in response['weaknesses']:
+-            EmployeeDAL.add_strength_info(user_id, weakness)
++            EmployeeDAL.add_weak_info(user_id, weakness)
+ 
+     @staticmethod
+     def add_recommendation_info(user_id, response_json):
+         response = json.loads(response_json)
+         for recommendation in response['recommendations']:
+-            EmployeeDAL.add_strength_info(user_id, recommendation)
++            EmployeeDAL.add_recommendation_info(user_id, recommendation)
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"edit promt\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/employee/__init__.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/employee/__init__.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/employee/client_routes.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/employee/employee_routes.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/hr/hr_routes.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/hr/hr_routes.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/hack_tool/llama_api/process.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/hack_tool/llama_api/process.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;AbdullinRR&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Gapenysh/innohack.git&quot;,\r\n    &quot;accountId&quot;: &quot;553dbff4-694e-4fbb-b85b-3c527105cef2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 8\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2oHqkGas9IL77JhycJbMKxaMjfD\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <OptionsSetting value=\"false\" id=\"Update\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.employee_bl.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.employee_dal.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.run.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"run\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"innhackaton\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"SDK_NAME\" value=\"Python 3.12\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/hack_tool\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/hack_tool/run.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"3f41eaae-10cb-4030-8382-15e27e5432b8\" name=\"Changes\" comment=\"\" />\r\n      <created>1730536989879</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730536989879</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"get employees\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730557937990</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730557937990</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"edit promt\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730573842090</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730573842090</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"get employees\" />\r\n    <MESSAGE value=\"edit promt\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"edit promt\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision ca61ac23bd7a2e55111ea5bc81aaa32d3a91180f)
++++ b/.idea/workspace.xml	(date 1730617663079)
+@@ -4,15 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="edit promt">
++    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="edit bd ai">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/employee/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/__init__.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/employee/client_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/process.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -120,7 +114,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1730573842090</updated>
+     </task>
+-    <option name="localTasksCounter" value="3" />
++    <task id="LOCAL-00003" summary="edit bd ai">
++      <option name="closed" value="true" />
++      <created>1730617232258</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1730617232258</updated>
++    </task>
++    <option name="localTasksCounter" value="4" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -137,6 +139,7 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="get employees" />
+     <MESSAGE value="edit promt" />
+-    <option name="LAST_COMMIT_MESSAGE" value="edit promt" />
++    <MESSAGE value="edit bd ai" />
++    <option name="LAST_COMMIT_MESSAGE" value="edit bd ai" />
+   </component>
+ </project>
+\ No newline at end of file
