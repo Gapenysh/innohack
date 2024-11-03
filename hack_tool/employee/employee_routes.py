@@ -34,5 +34,8 @@ def get_employee(user_id):
 
 @employee_route.route("/list_employees", methods=["GET"])
 def get_list_employees():
-    employees = EmployeeBL.get_all_employees()
+    employees = EmployeeBL.get_list_employees_with_review_count()
+
+
+    return jsonify(employees)
 

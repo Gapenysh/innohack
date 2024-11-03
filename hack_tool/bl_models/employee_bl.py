@@ -98,3 +98,9 @@ class EmployeeBL(object):
         user_data = EmployeeDAL.get_user_role(user_id)
 
         return user_data
+
+    @staticmethod
+    def get_list_employees_with_review_count():
+        list = EmployeeDAL.get_all_employees_with_reviews_count()
+
+        return list
