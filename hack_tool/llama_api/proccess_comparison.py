@@ -1,25 +1,22 @@
 import json
 import requests
 
-def prepare_prompt_comparison(summary):
 
-    field_definitions = (
-        "Поля для текста сравнения в формате JSON:\n"
-        "1. comparison: Сравнение двух специалистов и определение лучшего по его сводкам и качествам.Строка.\n"
-    )
+def prepare_prompt_comparison(data1, data2):
+
+    if data1[0] == data2[0]:
+        return None
+    print(data1[0])
+    print(data2[0])
 
 
-    instructions = (
-        "Ты профессиональный HR-специалист.\n"
-        "У тебя сводка и характеристики двух работников:\n\n"
-        "Если сравниваются два одинаковых сотрудника (то есть id сотрудников одинаковы), пиши, что сравнение невозможно, так как сравниваются одинаковые сотрудники."
-    )
-    instructions += "На основе данных двух описаний сотрудников определи, кто из них будет компетентнее. Опиши какие качества могут сыграть решающую роль в выборе именно этого сотрудника"
-    instructions += summary
-    instructions += field_definitions
 
-    return instructions
+    instructions = "Ты профессиональный HR-специалист.nУ тебя сводка и характеристики двух работников:nn"
+    instructions += "На основе данных двух описаний сотрудников определи, кто из них будет компетентнее. "
+    instructions += "Опиши какие качества могут сыграть решающую роль в выборе именно этого сотрудника.n"
+    instructions += "Вот исходные данные:n"
 
+    instructions +=
 def process_lama_comparison(prompt):
     url = "https://vk-scoreworker-case.olymp.innopolis.university/generate"
 

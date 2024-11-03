@@ -8,15 +8,17 @@ class ComparisonBL:
         return data1
 
     @staticmethod
-    def get_info_two_users_ai(id_1, id_2):
-        data1 = ComparisonDAL.get_all_info_by_id(id_1)
-        data2 = ComparisonDAL.get_all_info_by_id(id_2)
-        summary = {
-            "Данные 1го работника":data1,
-            "Данные 2го работника":data2,
-        }
-        prompt = prepare_prompt_comparison(summary)
-        print(prompt)
+    def comparison_two_users_ai(id_1, id_2):
+        data1 = ComparisonDAL.get_all_info_by_id_list(id_1)
+        data2 = ComparisonDAL.get_all_info_by_id_list(id_2)
+
+
+        prompt = prepare_prompt_comparison(data1, data2)
+        if not prompt:
+            return {"message": "data1 и data2 имеют одинаковые id",
+                    "Data1_id": f"{data1[0]}",
+                    "Data2_id": f"{data2[0]}"}
+
         result = process_lama_comparison(prompt)
         print(result)
         return result
