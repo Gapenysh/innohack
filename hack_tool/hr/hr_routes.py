@@ -20,10 +20,6 @@ def get_employee(user_id):
 
     employee = EmployeeBL.get_employee(user_id)
 
-    employee.append({
-        "average_rating": average_rating
-    })
-
     if employee is None:
 
         return jsonify({"error": "Employee not found"}), 404
