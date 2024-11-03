@@ -78,8 +78,8 @@ def proccess_lama(prompt):
         "prompt": [prompt],
         "apply_chat_template": True,
         "system_prompt": "Ты профессиональный инструмент для HR специалиста",
-        "max_tokens": 100000,
-        "temperature": 0.7,
+        "max_tokens": 10000,
+        "temperature": 0.5,
         "n": 3,
         "best_of": 3
     }

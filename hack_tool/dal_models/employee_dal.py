@@ -180,3 +180,110 @@ class EmployeeDAL(object):
             return e
         finally:
             conn.close()
+
+    @staticmethod
+    def get_user_rating(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT rating FROM competencies WHERE user_id = %s'''
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+                print(f'RESULT - {result}')
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_competencies(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT name, rating, content FROM competencies WHERE user_id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_strong_side(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT content FROM strong_side WHERE user_id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_weak_side(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT content FROM weak_side WHERE user_id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_recommendations(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT content FROM recommendation WHERE user_id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_summary(user_id):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = f'''SELECT content FROM summary WHERE user_id = %s'''
+
+                cursor.execute(query, (user_id,))
+                result = cursor.fetchall()
+
+                return result
+
+        except Exception as e:
+            print(str(e))
+            return e
+        finally:
+            conn.close()
