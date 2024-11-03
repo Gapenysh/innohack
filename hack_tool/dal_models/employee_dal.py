@@ -140,34 +140,13 @@ class EmployeeDAL(object):
         conn = connection_db()
         try:
             with conn.cursor() as cursor:
-                # Проверяем, существует ли запись с данным user_id и есть ли значение в strong_side
-                query = '''SELECT id, strong_side FROM strength_weak WHERE user_id = %s'''
-                cursor.execute(query, (user_id,))
-                result = cursor.fetchone()
-                print(f'strong - {result}')
-
-                if result:
-                    # Получаем id и текущее значение strong_side
-                    record_id, strong_side = result
-
-                    if strong_side is not None:
-                        query = '''INSERT INTO strength_weak (user_id, strong_side) VALUES (%s, %s)'''
-                        cursor.execute(query, (user_id, strength))
-                    else:
-                        query = '''UPDATE strength_weak SET strong_side = %s WHERE user_id = %s'''
-                        cursor.execute(query, (strength, user_id))
-
-                else:
-                    # Если записи с данным user_id нет, вставляем новую запись
-                    query = '''INSERT INTO strength_weak (user_id, strong_side) VALUES (%s, %s)'''
-                    cursor.execute(query, (user_id, strength))
-
+                query = '''INSERT INTO strong_side (user_id, content) VALUES (%s, %s)'''
+                cursor.execute(query, (user_id, strength))
                 conn.commit()
 
         except Exception as e:
             print(str(e))
             return e
-
         finally:
             conn.close()
 
@@ -176,62 +155,28 @@ class EmployeeDAL(object):
         conn = connection_db()
         try:
             with conn.cursor() as cursor:
-                query = '''SELECT id, weak_side FROM strength_weak WHERE user_id = %s'''
-                cursor.execute(query, (user_id,))
-                result = cursor.fetchone()
-                print(f'weak - {result}')
-
-                if result:
-
-                    record_id, weak_side = result
-
-                    if weak_side is not None:
-                        query = '''INSERT INTO strength_weak (user_id, weak_side) VALUES (%s, %s)'''
-                        cursor.execute(query, (user_id, weakness))
-                    else:
-                        query = '''UPDATE strength_weak SET weak_side = %s WHERE user_id = %s'''
-                        cursor.execute(query, (weakness, user_id))
-                else:
-                    query = '''INSERT INTO strength_weak (user_id, weak_side) VALUES (%s, %s)'''
-                    cursor.execute(query, (user_id, weakness))
-
+                query = '''INSERT INTO weak_side (user_id, content) VALUES (%s, %s)'''
+                cursor.execute(query, (user_id, weakness))
                 conn.commit()
 
         except Exception as e:
             print(str(e))
             return e
-
         finally:
             conn.close()
+
 
     @staticmethod
     def add_recommendation_info(user_id, recommendation):
         conn = connection_db()
         try:
             with conn.cursor() as cursor:
-                query = '''SELECT id, recomm FROM strength_weak WHERE user_id = %s'''
-                cursor.execute(query, (user_id,))
-                result = cursor.fetchone()
-                print(f'recomm - {result}')
-
-                if result:
-
-                    record_id, recomm = result
-                    if recomm is not None:
-                        query = '''INSERT INTO strength_weak (user_id, recomm) VALUES (%s, %s)'''
-                        cursor.execute(query, (user_id, recommendation))
-                    else:
-                        query = '''UPDATE strength_weak SET recomm = %s WHERE user_id = %s'''
-                        cursor.execute(query, (recommendation, user_id))
-                else:
-                    query = '''INSERT INTO strength_weak (user_id, recomm) VALUES (%s, %s)'''
-                    cursor.execute(query, (user_id, recommendation))
-
+                query = '''INSERT INTO recommendation (user_id, content) VALUES (%s, %s)'''
+                cursor.execute(query, (user_id, recommendation))
                 conn.commit()
 
         except Exception as e:
             print(str(e))
             return e
-
         finally:
             conn.close()
