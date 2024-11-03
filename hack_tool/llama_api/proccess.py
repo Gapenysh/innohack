@@ -80,7 +80,8 @@ def proccess_lama(prompt):
         "system_prompt": "Ты профессиональный инструмент для HR специалиста",
         "max_tokens": 100000,
         "temperature": 0.7,
-        "n": 1,
+        "n": 3,
+        "best_of": 3
     }
 
     headers = {
