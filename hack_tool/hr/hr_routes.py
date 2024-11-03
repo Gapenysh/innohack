@@ -27,6 +27,7 @@ def get_employee(user_id):
 
 @hr_route.route('/employees/<int:user_id>/summary', methods=['GET'])
 def get_employee_summary(user_id):
+    print(user_id)
     summary = HrBl.create_summary(user_id)
 
     if summary is None:

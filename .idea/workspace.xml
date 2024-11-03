@@ -4,16 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="get employees">
+    <list default="true" id="3f41eaae-10cb-4030-8382-15e27e5432b8" name="Changes" comment="edit promt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/employee_bl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/bl_models/hr_bl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/employee_dal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/dal_models/hr_dal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/employee/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/employee/client_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/employee/employee_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/hr/hr_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/hack_tool/llama_api/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hack_tool/llama_api/prompt.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -100,7 +112,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730557937990</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="edit promt">
+      <option name="closed" value="true" />
+      <created>1730573842090</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730573842090</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -116,6 +136,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="get employees" />
-    <option name="LAST_COMMIT_MESSAGE" value="get employees" />
+    <MESSAGE value="edit promt" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit promt" />
   </component>
 </project>
