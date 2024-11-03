@@ -368,3 +368,18 @@ class EmployeeDAL(object):
         finally:
             conn.close()
 
+    @staticmethod
+    def add_new_review(user_id, review):
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+                query = """INSERT INTO reviews(user_id, review) VALUES (%s, %s)"""
+                cursor.execute(query, (user_id, review))
+                conn.commit()
+            return True
+        except Exception as e:
+            print(str(e))
+            return False
+        finally:
+            conn.close()
+

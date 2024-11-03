@@ -104,3 +104,7 @@ class EmployeeBL(object):
         list = EmployeeDAL.get_all_employees_with_reviews_count()
 
         return list
+    @staticmethod
+    def create_review(user_id, review):
+        success = EmployeeDAL.add_new_review(user_id, review)
+        return success

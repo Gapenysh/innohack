@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from hack_tool.bl_models.employee_bl import EmployeeBL
 
@@ -38,4 +38,15 @@ def get_list_employees():
 
 
     return jsonify(employees)
+
+@employee_route.route("/add_review", methods=["POST"])
+def create_review():
+    user_id = request.json.get("user_id", None)
+    review = request.json.get("review", None)
+
+    success = EmployeeBL.add_new_review(user_id, review)
+    if not success:
+        return jsonify({"Error": "review wasnt created"})
+    else:
+        return jsonify({"message": "review was created"})
 
