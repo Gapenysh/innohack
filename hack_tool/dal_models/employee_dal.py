@@ -357,5 +357,20 @@ class EmployeeDAL(object):
         finally:
             conn.close()
 
+    @staticmethod
+    def get_all_employees_with_reviews_list():
+        conn = connection_db()
+        try:
+            with conn.cursor() as cursor:
+
+                query = '''SELECT id, name FROM users WHERE job_title IS NOT NULL'''
+                cursor.execute(query)
+                users = cursor.fetchall()
+            return users
+        except Error as e:
+            return str(e)
+        finally:
+            conn.close()
+
 
 

@@ -45,3 +45,8 @@ def create_review():
     else:
         return jsonify({"message": "review was created"})
 
+@employee_route.route("/comparison_list", methods=["GET"])
+def comparison_users_list():
+    users = EmployeeBL.get_list_users()
+    return users
+

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from hack_tool.bl_models.comparison_bl import ComparisonBL
 
+
 comparison_route = Blueprint("comparison_routes", __name__)
 
 @comparison_route.route("/employee/<int:id>", methods=["GET"])
@@ -29,6 +30,7 @@ def comparison_users_ai():
     result = ComparisonBL.comparison_two_users_ai(user_id_1, user_id_2)
 
     return result
+
 
 
 
