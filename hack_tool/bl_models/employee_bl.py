@@ -89,7 +89,7 @@ class EmployeeBL(object):
 
     @staticmethod
     def get_user_summary(user_id):
-        user_data = EmployeeDAL.get_user_recommendations(user_id)
+        user_data = EmployeeDAL.get_user_summary(user_id)
 
         return user_data
 

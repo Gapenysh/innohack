@@ -71,15 +71,14 @@ def prepare_prompt(reviews):
 def proccess_lama(prompt):
     url = "https://vk-scoreworker-case.olymp.innopolis.university/generate"
 
-    # Регулярное выражение для валидации JSON-ответа
-    regex_pattern = r'^\{\s*"summary":\s*".+?",\s*"parameters":\s*\{(?:\s*".+?":\s*[1-5],?\s*)+\},\s*"strengths":\s*\[.+?\],\s*"weaknesses":\s*\[.+?\],\s*"recommendations":\s*\[.+?\]\s*\}$'
+
 
     data = {
         "prompt": [prompt],
         "apply_chat_template": True,
         "system_prompt": "Ты профессиональный инструмент для HR специалиста",
         "max_tokens": 20000,
-        "top_k":  20,
+        "top_k":  35,
         "temperature": 0.45,
         "n": 3,
         "best_of": 3
