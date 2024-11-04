@@ -29,7 +29,7 @@ def comparison_users_ai():
 
     result = ComparisonBL.comparison_two_users_ai(user_id_1, user_id_2)
 
-    return result
+    return jsonify(result)
 
 
 
