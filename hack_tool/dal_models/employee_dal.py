@@ -33,7 +33,7 @@ class EmployeeDAL(object):
 
         try:
             with conn.cursor() as cursor:
-                query = f'''SELECT * FROM users WHERE id = %s;'''
+                query = f'''SELECT name FROM users WHERE id = %s;'''
 
                 cursor.execute(query, (user_id,))
                 employee = cursor.fetchone()

@@ -23,6 +23,7 @@ def get_employee(user_id):
         return jsonify({"error": "Employee not found"}), 404
 
     return jsonify({
+        "name": employee,
         "rating": average_rating,
         "role": role,
         "competencies": user_competencies,
